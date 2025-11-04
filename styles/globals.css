@@ -1,0 +1,41 @@
+@import "tailwindcss";
+@import "remixicon/fonts/remixicon.css";
+
+/*  ESTILOS GLOBALES*/
+body {
+  background-color: #000;
+  color: #fff;
+  overflow-x: hidden;
+}
+
+body.main-mode {
+  background-color: #000;
+}
+
+body.overlay-mode {
+  background: transparent !important;
+}
+
+* {
+  scrollbar-width: none;
+}
+
+#__next, main {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body.main-mode {
+  background-color: #000;
+  color: #fff;
+}
+
+body.overlay-mode {
+  background: transparent !important;
+}
