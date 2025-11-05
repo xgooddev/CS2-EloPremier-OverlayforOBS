@@ -21,7 +21,7 @@ interface PlayerData {
 }
 
 function OverlayContent() {
-  useBodyClass("main-mode");
+  useBodyClass("overlay-mode");
   const searchParams = useSearchParams();
   const steam64Id = searchParams?.get("steam64_id");
   const [player, setPlayer] = useState<PlayerData | null>(null);
@@ -93,7 +93,7 @@ function OverlayContent() {
   const eloFormatted = player.ranks.premier.toLocaleString("es-ES");
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-black">
+    <div className="flex flex-col items-center justify-center h-screen bg-transparent">
       <motion.div
         className="backdrop-blur-md bg-black rounded-2xl px-5 py-3 flex flex-row items-center justify-between w-[500px] shadow-md border border-white/20 text-white"
         animate={{
@@ -110,7 +110,7 @@ function OverlayContent() {
               ? "rgba(255,0,0,0.6)"
               : "rgba(255,255,255,0.2)",
         }}
-        transition={{ duration: 0.7, ease: "easeInOut" }}
+        transition={{ duration: 0.9, ease: "easeInOut" }}
       >
         {/* Nombre e historial */}
         <div className="flex flex-col items-start justify-center">
