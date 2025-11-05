@@ -1,13 +1,28 @@
 "use client";
-
+import { useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { parseSteam64Id } from "../app/utils/steam";
 import { useBodyClass } from "@/hooks/useBodyClass";
 
 export default function HomePage() {
-  useBodyClass("main-mode");
+  const [input, setInput] = useState("");
+  const [link, setLink] = useState("");
 
-  return (
+  const handleGenerate = () => {
+    const id = parseSteam64Id(input);
+    if (!id) {
+      alert("Porfavor pega tu Steam64 ID directamente.");
+      return;
+    }
+    setLink(`/overlay?steam64_id=${id}`);
+  };
+  
+  
+      
+
+
+  return (  
     <main className="min-h-screen flex flex-col items-center bg-black text-white overflow-x-hidden">
       {/*  Navbar */}
       <nav className="fixed top-0 left-0 w-full bg-black/70 backdrop-blur-lg border-b border-white/10 z-50">
@@ -45,7 +60,7 @@ export default function HomePage() {
         </h1>
         <p className="text-gray-400 max-w-lg leading-relaxed">
           Mostrá tus estadísticas de CS2 en tiempo real. Integrá tu cuenta y
-          generá un overlay dinámico, moderno y transparente para tus streams.
+          generá un overlay dinámico, moderno y minimalista para tus streams.
         </p>
 
         {/* Input */}
@@ -53,11 +68,23 @@ export default function HomePage() {
           <input
             type="text"
             placeholder="Ingresá tu Steam64 ID"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
             className="bg-gray-900/70 text-white px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-400 w-72 placeholder-gray-400"
           />
-          <button className="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold px-6 py-3 rounded-xl transition-all hover:scale-105">
+          <button onClick={handleGenerate} 
+          className="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold px-6 py-3 rounded-xl transition-all hover:scale-105">
             Generar Overlay
           </button>
+           {link && (
+        <a
+          href={link}
+          target="_blank"
+          className="text-blue-400 mt-2 hover:underline"
+        >
+          Abrir overlay
+        </a>
+      )}
           
         </div>
         <p>Si no sabes cual es tu Stream64 ID podes obtenerlo pegando tu link de perfil de steam <u><a href="https://steamid.xyz/" target="_blank">aqui</a>.</u></p>
@@ -91,7 +118,7 @@ export default function HomePage() {
         </motion.div>
 
         <p className="text-gray-200 text-sm mt-3 text-center">
-          Así se verá tu overlay en OBS con fondo transparente.
+          Así se verá tu overlay en OBS con tu rango de Premier y ultimos 5 mapas jugados.
         </p>
       </motion.section>
 
@@ -178,7 +205,7 @@ export default function HomePage() {
             <i className="ri-github-fill"></i>
           </a>
           <a
-            href="mailto:tuemail@gmail.com"
+            href="mailto:gonzaespindoladj@gmail.com"
             className="hover:text-yellow-400 transition"
           >
             <i className="ri-mail-line"></i>
@@ -192,5 +219,5 @@ export default function HomePage() {
         <span className="text-yellow-400 font-medium">GoodtripDev</span>
       </footer>
     </main>
-  );
-}
+    
+    )}
