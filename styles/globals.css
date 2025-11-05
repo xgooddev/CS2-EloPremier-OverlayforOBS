@@ -1,7 +1,6 @@
 @import "tailwindcss";
 @import "remixicon/fonts/remixicon.css";
 
-/*  ESTILOS GLOBALES*/
 body {
   background-color: #000;
   color: #fff;
