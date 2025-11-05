@@ -45,7 +45,6 @@ body.overlay-mode {
 }
 
 body.overlay-mode #__next,
-body.overlay-mode main,
-body.overlay-mode div {
+body.overlay-mode main {
   background: transparent !important;
 }
