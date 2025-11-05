@@ -1,6 +1,6 @@
 "use client";
-import { useBodyClass } from "@/hooks/useBodyClass"; 
-import { useEffect, useState, useRef } from "react";
+import { useBodyClass } from "@/hooks/useBodyClass";
+import { useEffect, useState, useRef, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import clsx from "clsx";
 import Image from "next/image";
@@ -20,7 +20,7 @@ interface PlayerData {
   recent_matches: Match[];
 }
 
-export default function OverlayPage() {
+function OverlayContent() {
   useBodyClass("main-mode");
   const searchParams = useSearchParams();
   const steam64Id = searchParams?.get("steam64_id");
@@ -93,7 +93,7 @@ export default function OverlayPage() {
   const eloFormatted = player.ranks.premier.toLocaleString("es-ES");
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
+    <div className="flex flex-col items-center justify-center h-screen bg-black">
       <motion.div
         className="backdrop-blur-md bg-black rounded-2xl px-5 py-3 flex flex-row items-center justify-between w-[500px] shadow-md border border-white/20 text-white"
         animate={{
@@ -112,7 +112,7 @@ export default function OverlayPage() {
         }}
         transition={{ duration: 0.7, ease: "easeInOut" }}
       >
-        {/* Nombre de steam e historial de partidas */}
+        {/* Nombre e historial */}
         <div className="flex flex-col items-start justify-center">
           <h2 className="text-3xl font-bold mb-1 drop-shadow-md leading-tight">
             {player.name}
@@ -133,7 +133,7 @@ export default function OverlayPage() {
           </div>
         </div>
 
-        {/* ELO de Premier y Faceit */}
+        {/* ELO + Faceit */}
         <div className="flex flex-col items-end justify-center text-right">
           <div className="flex items-center gap-2">
             <span className="text-sm font-bold text-gray-100">
@@ -167,7 +167,14 @@ export default function OverlayPage() {
         </div>
       </motion.div>
     </div>
-   
   );
-  
+}
+
+// ⬇️ El wrapper con Suspense evita el error de build en Vercel
+export default function OverlayPage() {
+  return (
+    <Suspense fallback={<div className="text-white text-center mt-10">Cargando overlay...</div>}>
+      <OverlayContent />
+    </Suspense>
+  );
 }
