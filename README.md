@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CS2 Premier ELO Tracker — Overlay para streamers
 
-## Getting Started
+> Overlay minimalista para OBS que muestra el ELO Premier, ELO Faceit (nivel) y las últimas 5 partidas usando la API pública de **Leetify**.  
+> Diseñado para streamers que quieren mostrar sus estadísticas en tiempo real con estilo y animaciones suaves.
 
-First, run the development server:
+---
+
+## Demo
+- **Demo (local)**: `http://localhost:3000/overlay?steam64_id=TU_STEAM64_ID`
+- **Demo (deploy)**: 
+
+---
+
+## Capturas
+
+
+---
+
+## Lo que hace
+- Muestra el **ELO Premier** del jugador en un cuadro con color por rango.  
+- Muestra **Faceit level** (ícono) debajo del ELO.  
+- Muestra las **últimas 5 partidas** en formato `W - L - D`, coloreadas.  
+- Animaciones: glow del cuadro de ELO cuando cambia, y borde verde/rojo temporal al ganar/perder.  
+- Fuente de datos: **Leetify Public API** (fetch desde una API route serverless en Next.js).  
+- Listo para usarse en **OBS (fuente navegador)** con estilo minimalista.
+
+---
+
+## Tech stack
+- Next.js 16 (App Router) + TypeScript  
+- Tailwind CSS  
+- Framer Motion (animaciones)  
+- Fetch API (servidor → Leetify)  
+- Imagenes/íconos en `/public`  
+- (Opcional) Recharts o librería de charts para métricas históricas
+
+---
+
+## Requisitos
+- Node 18+ (LTS recomendado)  
+- npm / pnpm / yarn  
+- Cuenta y API key de Leetify (si aplica)  
+- Vercel account para deploy (opcional)
+
+---
+
+## Instalación (local)
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+# clonar
+git clone https://github.com/tuusuario/cs2-elo-tracker.git
+cd cs2-elo-tracker
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# instalar
+npm install
+# o con pnpm
+# pnpm install
