@@ -93,7 +93,7 @@ function OverlayContent() {
   const eloFormatted = player.ranks.premier.toLocaleString("es-ES");
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-transparent">
+    <div className="flex flex-col items-center justify-center h-screen">
       <motion.div
         className="backdrop-blur-md bg-black rounded-2xl px-5 py-3 flex flex-row items-center justify-between w-[500px] shadow-md border border-white/20 text-white"
         animate={{
