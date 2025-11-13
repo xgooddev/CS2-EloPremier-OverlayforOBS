@@ -29,14 +29,15 @@ function OverlayContent() {
   const [animationState, setAnimationState] = useState<"idle" | "win" | "lose">("idle");
   const prevLastMatchRef = useRef<string>("");
 
-  const getEloColor = (elo: number) => {
-    if (elo < 5000) return "#b3c4d9";
-    if (elo < 10000) return "#5e98d9";
-    if (elo < 15000) return "#4b69fe";
-    if (elo < 20000) return "#8947ff";
-    if (elo < 25000) return "#b12fc1";
-    if (elo < 30000) return "#eb4c4b";
-    return "#f1ae35";
+  // Mapeo de ELO -> archivo e info de color
+  const getEloContainer = (elo: number) => {
+    if (elo >= 30000) return { img: "/elobox/rating.oro.png", color: "rgb(252, 219, 0)" };
+    if (elo >= 25000) return { img: "/elobox/rating.rojo.png", color: "rgb(238, 70, 70)" };
+    if (elo >= 20000) return { img: "/elobox/rating.pink.png", color: "rgb(234, 19, 227)" };
+    if (elo >= 15000) return { img: "/elobox/rating.violeta.png", color: "rgb(187, 110, 249)" };
+    if (elo >= 10000) return { img: "/elobox/rating.azul.png", color: "rgb(98, 155, 255)" };
+    if (elo >= 5000) return { img: "/elobox/rating.celeste.png", color: "rgb(127, 187, 224)" };
+    return { img: "/elobox/rating.gris.png", color: "rgb(190, 198, 209)" };
   };
 
   const getFaceitIcon = (level?: number) =>
@@ -89,13 +90,14 @@ function OverlayContent() {
   if (error) return <div className="text-red-500">{error}</div>;
   if (!player) return <div className="text-gray-300">Cargando...</div>;
 
-  const eloColor = getEloColor(player.ranks.premier);
-  const eloFormatted = player.ranks.premier.toLocaleString("es-ES");
+  const elo = player.ranks.premier;
+  const { img, color } = getEloContainer(elo);
+  const eloFormatted = elo.toLocaleString("es-ES");
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
+    <div className="flex flex-col items-center justify-center h-screen bg-transparent">
       <motion.div
-        className="backdrop-blur-md bg-black rounded-2xl px-5 py-3 flex flex-row items-center justify-between w-[500px] shadow-md border border-white/20 text-white"
+        className="backdrop-blur-md bg-black/90 rounded-2xl px-5 py-3 flex flex-row items-center justify-between w-[500px] shadow-md border border-white/20 text-white"
         animate={{
           boxShadow:
             animationState === "win"
@@ -135,42 +137,51 @@ function OverlayContent() {
 
         {/* ELO + Faceit */}
         <div className="flex flex-col items-end justify-center text-right">
-          <div className="flex items-center gap-2">
-            <span className="text-sm font-bold text-gray-100">
-              ELO PREMIER:
-            </span>
-            <motion.span
-              className="font-bold text-3xl px-3 py-1 rounded-md text-white"
-              style={{ backgroundColor: eloColor }}
-              animate={{
-                scale: animationState !== "idle" ? 1.1 : 1,
-                boxShadow:
-                  animationState !== "idle" ? `0 0 20px ${eloColor}` : "none",
-              }}
-              transition={{ duration: 0.4 }}
+          <div className="flex flex-col items-center relative">
+            <motion.div
+              key={elo} // fuerza re-render animado cuando cambia el número
+              initial={{ rotateX: animationState === "win" ? -90 : animationState === "lose" ? 90 : 0, opacity: 0 }}
+              animate={{ rotateX: 0, opacity: 1 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className="relative flex items-center justify-center"
             >
-              {eloFormatted}
-            </motion.span>
-          </div>
-
-          {player.ranks.faceit && (
-            <div className="flex items-center gap-2 mt-1">
-              <span className="text-sm font-bold text-gray-100">FACEIT:</span>
               <Image
-                src={getFaceitIcon(player.ranks.faceit) || ""}
-                alt={`Faceit Level ${player.ranks.faceit}`}
-                width={32}
-                height={32}
+                src={img}
+                alt="ELO Container"
+                width={180}
+                height={60}
+                className="object-contain"
               />
-            </div>
-          )}
+              <span
+                className="absolute text-4xl font-bold"
+                style={{
+                  color,
+                  textShadow:
+                    "1px 1px 2px rgba(0,0,0,0.8), -1px -1px 2px rgba(0,0,0,0.8)",
+                }}
+              >
+                {eloFormatted}
+              </span>
+            </motion.div>
+            {player.ranks.faceit && (
+              <div className="flex items-center gap-2 mt-2">
+                <span className="text-sm font-bold text-gray-100">FACEIT:</span>
+                <Image
+                  src={getFaceitIcon(player.ranks.faceit) || ""}
+                  alt={`Faceit Level ${player.ranks.faceit}`}
+                  width={32}
+                  height={32}
+                />
+              </div>
+            )}
+          </div>
         </div>
       </motion.div>
     </div>
   );
 }
 
-// ⬇️ El wrapper con Suspense evita el error de build en Vercel
+// Suspense Wrapper
 export default function OverlayPage() {
   return (
     <Suspense fallback={<div className="text-white text-center mt-10">Cargando overlay...</div>}>
